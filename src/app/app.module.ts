@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { TableComponent } from './table/table.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { BigTableComponent } from './big-table/big-table.component';
+import { CompanyLogoRenderComponent } from './company-logo-render/company-logo-render.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
-    BigTableComponent
+    BigTableComponent,
+    CompanyLogoRenderComponent
   ],
   imports: [
     BrowserModule,

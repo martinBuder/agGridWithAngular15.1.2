@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ColDef, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridReadyEvent, CellValueChangedEvent } from 'ag-grid-community';
 import { CompanyLogoRenderComponent } from '../company-logo-render/company-logo-render.component';
 
 interface IRow {
@@ -28,6 +28,8 @@ interface IRow {
       [columnDefs]="colDefs"
       (gridReady)="onGridReady($event)" 
       [pagination]="true"     
+      [defaultColDef]="defaultColDef"
+      (cellValueChanged)="onCellValueChanged($event)"
     >
     </ag-grid-angular>
   </div>
@@ -48,11 +50,11 @@ export class BigTableComponent {
    },
     { field: "location" },
     { field: "date",
-      valueFormatter: params => { return params.value ? new Date(params.value).toUTCString() : '';},
+      valueFormatter: params => { return params.value ? new Date(params.value).toLocaleDateString() : '';},
     }, 
     { field: "price",
       valueFormatter: params => { return '£' + params.value.toLocaleString(); } },
-    { field: "successful" },
+    { field: "successful"},
     { field: "rocket" },
   ];
 
@@ -62,6 +64,14 @@ export class BigTableComponent {
   // }
   // in ag-grid-angular we muss add:
   // [defaultColDef]="defaultColDef" 
+
+  //*2 with this code we would have a adding option in each column
+  defaultColDef: ColDef = {
+    editable: true
+  }
+  // we need onCellValueChanged for this
+
+
 
   
   constructor(private http: HttpClient) {}
@@ -74,6 +84,11 @@ export class BigTableComponent {
       .subscribe(data => this.rowData = data);
       console.log(this.rowData);
   }
+
+  // Handle cell editing event
+onCellValueChanged = (event: CellValueChangedEvent) => {
+  console.log(`New Cell Value: ${event.value}`)
+}
 
 
 
